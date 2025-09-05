@@ -1,0 +1,50 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard"
+    },
+    {
+      "url": "/orders",
+      "name": "Pesanan",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "order"
+    },
+    {
+      "name": "Master Data",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "master-data",
+      "submenu": [
+        {
+          "url": "/master-data/menu",
+          "name": "Menu",
+          "slug": "master-data.menu"
+        },
+        {
+          "url": "/master-data/kategori",
+          "name": "Kategori",
+          "slug": "master-data.category"
+        },
+        {
+          "url": "/master-data/grup-produk",
+          "name": "Grup Produk",
+          "slug": "master-data.group-product"
+        }
+      ]
+    },
+    {
+      "url": "/purchases",
+      "name": "Laporan Belanja",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "purchase"
+    },
+    {
+      "url": "/operation-costs",
+      "name": "Biaya Operasional",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "operation-cost"
+    }
+  ]
+}
