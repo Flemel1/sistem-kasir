@@ -4,11 +4,14 @@ namespace App\Livewire\Pages;
 
 use App\Enums\PriceChoose;
 use App\Enums\StatusOrder;
+use App\Models\OpenOrder;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ItemNotFoundException;
@@ -23,9 +26,27 @@ class CreateOrder extends Component
     public EloquentCollection $products;
     public int $total = 0;
 
-    public function mount(): void
+    public ?OpenOrder $openBill = null;
+
+    public function mount(Request $request): void
     {
-        $this->currentOrders = collect([]);
+        $openBillID = $request->query('open_bill_id');
+        if ($openBillID) {
+            try {
+                $openBill = OpenOrder::whereNull('doned_at')->findOrFail($openBillID);
+                $this->currentOrders = collect(json_decode($openBill->ordered_items, true));
+                $this->total = $openBill->grand_total;
+
+                $this->openBill = $openBill;
+            } catch (ModelNotFoundException $ex) {
+                abort(404);
+            } catch (Exception $th) {
+                abort(500);
+            }
+        } else {
+            $this->currentOrders = collect([]);
+        }
+
         $this->products = Product::all();
     }
 
@@ -53,13 +74,12 @@ class CreateOrder extends Component
             return $identifier == $value['identifier'] && $price_choose == $value['price_choose'];
         });
 
-        
+
 
         foreach ($additional_products as $additional_product) {
             foreach ($additional_product as $item) {
                 $additional_product_prices += $item['price'];
             }
-            
         }
 
         if (is_null($product)) {
@@ -82,8 +102,6 @@ class CreateOrder extends Component
                 'additional_products' => $additional_products,
                 'identifier' => $identifier
             ]);
-
-            
 
             $this->currentOrders = $currentOrders;
             $this->total = $currentOrders->sum(function (array $value) {
@@ -182,78 +200,100 @@ class CreateOrder extends Component
     }
 
     #[On('create-order')]
-    public function create_order(string $customer_name, string $cash_money): void
+    public function create_order(string $customer_name, string $cash_money, string $status_order): void
     {
         if ($this->currentOrders->isNotEmpty()) {
-            $cash_money = intval($cash_money);
-            if ($cash_money >= $this->total) {
-                try {
-                    $change_money =  $cash_money - $this->total;
-                    DB::beginTransaction();
-                    $order = Order::create([
-                        'customer_name' => $customer_name,
-                        'total_payment' => $this->total,
-                        'cash_money' => $cash_money,
-                        'change_money' => $change_money,
-                        'status_order' => StatusOrder::OPENED
-                    ]);
+            if ($status_order === StatusOrder::OPENED->value) {
+                if ($this->openBill) {
+                    $this->openBill->customer_name = $customer_name;
+                    $this->openBill->ordered_items = $this->currentOrders;
+                    $this->openBill->grand_total = $this->total;
+                    $this->openBill->save();
+                } else {
+                    $openOrder = new OpenOrder();
+                    $openOrder->customer_name = $customer_name;
+                    $openOrder->ordered_items = $this->currentOrders;
+                    $openOrder->grand_total = $this->total;
+                    $openOrder->save();
+                }
 
-                    if ($order) {
-                        $order_id = $order->id;
-
-                        $groupByOrders = $this->currentOrders->groupBy('identifier')->all();
-
-                        foreach ($groupByOrders as $order) {
-                            if ($order->count() > 1) {
-                                $orderTemp = [
-                                    'product_id' => $order[0]['product_id'],
-                                    'amount' => 0
-                                ];
-
-                                foreach ($order as $obj) {
-                                    $orderTemp['amount'] += $obj['amount'];
-                                }
-
-                                OrderDetail::create([
-                                    'product_id' => $orderTemp['product_id'],
-                                    'order_id' => $order_id,
-                                    'amount' => $orderTemp['amount']
-                                ]);
-                            } else {
-                                OrderDetail::create([
-                                    'product_id' => $order[0]['product_id'],
-                                    'order_id' => $order_id,
-                                    'amount' => $order[0]['amount']
-                                ]);
-                            }
-                        }
-
-                        DB::commit();
-                        $this->dispatch('create-order-status', [
-                            'type' => 'success',
-                            'message' => 'Pesanan Berhasil Dibuat'
+                $this->redirectRoute('open-bill');
+            } else {
+                $cash_money = intval($cash_money);
+                if ($cash_money >= $this->total) {
+                    try {
+                        $change_money =  $cash_money - $this->total;
+                        DB::beginTransaction();
+                        $order = Order::create([
+                            'customer_name' => $customer_name,
+                            'total_payment' => $this->total,
+                            'cash_money' => $cash_money,
+                            'change_money' => $change_money,
+                            'status_order' => $status_order
                         ]);
-                        $this->print_invoice($customer_name, $cash_money);
-                        $this->redirectRoute('order', navigate: true);
-                    } else {
+
+                        if ($order) {
+                            $order_id = $order->id;
+
+                            $groupByOrders = $this->currentOrders->groupBy('identifier')->all();
+
+                            foreach ($groupByOrders as $order) {
+                                if ($order->count() > 1) {
+                                    $orderTemp = [
+                                        'product_id' => $order[0]['product_id'],
+                                        'amount' => 0
+                                    ];
+
+                                    foreach ($order as $obj) {
+                                        $orderTemp['amount'] += $obj['amount'];
+                                    }
+
+                                    OrderDetail::create([
+                                        'product_id' => $orderTemp['product_id'],
+                                        'order_id' => $order_id,
+                                        'amount' => $orderTemp['amount']
+                                    ]);
+                                } else {
+                                    OrderDetail::create([
+                                        'product_id' => $order[0]['product_id'],
+                                        'order_id' => $order_id,
+                                        'amount' => $order[0]['amount']
+                                    ]);
+                                }
+                            }
+
+                            if ($this->openBill) {
+                                $this->openBill->doned_at = now();
+                                $this->openBill->save();
+                            }
+
+                            DB::commit();
+                            $this->dispatch('create-order-status', [
+                                'type' => 'success',
+                                'message' => 'Pesanan Berhasil Dibuat'
+                            ]);
+                            // $this->print_invoice($customer_name, $cash_money);
+                            $this->redirectRoute('order');
+                        } else {
+                            DB::rollBack();
+                            $this->dispatch('create-order-status', [
+                                'type' => 'error',
+                                'message' => 'Pesanan Gagal Dibuat'
+                            ]);
+                        }
+                    } catch (Exception $ex) {
                         DB::rollBack();
                         $this->dispatch('create-order-status', [
                             'type' => 'error',
-                            'message' => 'Pesanan Gagal Dibuat'
+                            'message' => $ex->getMessage()
                         ]);
                     }
-                } catch (Exception $ex) {
-                    DB::rollBack();
+                } else {
                     $this->dispatch('create-order-status', [
                         'type' => 'error',
-                        'message' => $ex->getMessage()
+                        'message' => 'Uang cash kurang'
                     ]);
                 }
-            } else {
-                $this->dispatch('create-order-status', [
-                    'type' => 'error',
-                    'message' => 'Uang cash kurang'
-                ]);
             }
         }
     }

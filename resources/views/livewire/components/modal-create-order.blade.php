@@ -23,6 +23,18 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="status_order" class="form-label">Status Order</label>
+                            <select id="status_order" wire:model="form.status_order"  class="form-control">
+                                <option value="closed" selected>Close</option>
+                                <option value="opened">Open</option>
+                            </select>
+                            @error('form.status_order')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button wire:click="close" type="button" class="btn btn-outline-secondary"

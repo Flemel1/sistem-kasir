@@ -7,10 +7,22 @@
       "slug": "dashboard"
     },
     {
+      "url": "/order/create",
+      "name": "Buat Pesanan",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "order.create"
+    },
+    {
       "url": "/orders",
-      "name": "Pesanan",
+      "name": "Pesanan Selesai",
       "icon": "menu-icon tf-icons bx bx-layout",
       "slug": "order"
+    },
+    {
+      "url": "/open-bills",
+      "name": "Open Bill",
+      "icon": "menu-icon tf-icons bx bx-layout",
+      "slug": "open-bill"
     },
     {
       "name": "Master Data",

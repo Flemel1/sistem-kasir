@@ -73,10 +73,9 @@
                                         @if (!$product->additional_product_ids->contains('additional_product_id', $group->id))
                                             <button wire:click="add_additional_product({{ $group->id }})"
                                                 type="button" class="btn btn-success">Tambah</button>
-                                        @endif
-
-                                        @if ($product->additional_product_ids->contains('additional_product_id', $group->id))
-                                            <button wire:click="delete_additional_product({{ $group->id }})" type="button" class="btn btn-danger">Hapus</button>
+                                        @else
+                                            <button wire:click="delete_additional_product({{ $group->id }})"
+                                                type="button" class="btn btn-danger">Hapus</button>
                                         @endif
                                     </td>
                                 </tr>

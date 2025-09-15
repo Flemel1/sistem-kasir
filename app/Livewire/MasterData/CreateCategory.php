@@ -14,7 +14,7 @@ class CreateCategory extends Component
         $isSuccess = $this->form->save();
 
         if ($isSuccess) {
-            $this->redirectRoute('master-data.category', navigate: true);
+            $this->redirectRoute('master-data.category');
         }
     }
     

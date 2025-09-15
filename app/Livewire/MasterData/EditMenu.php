@@ -21,7 +21,7 @@ class EditMenu extends Component
 
     public function mount(Product $product)
     {
-        $this->product = Product::with('additional_product_ids')->where('id', '=', $product->id)->get()->first();
+        $this->product = Product::with('additional_product_ids')->where('id', '=', $product->id)->first();
         $this->categories = ProductCategory::all();
         $this->form->setProduct($product);
     }

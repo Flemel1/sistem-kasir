@@ -16,13 +16,13 @@
                 <div class="card-body">
                     <h3>Pesanan</h3>
                     <ol>
-                        
                         @foreach ($currentOrders as $order)
                             <li>
                                 <div class="row">
                                     <p class="w-75 m-0">{{ $order['product_name'] }} x{{ $order['amount'] }}</p>
                                     <div class="w-25 row">
-                                        <span wire:click="edit_product('{{ $order['identifier'] }}')" class="p-0 btn text-primary">Edit</span>
+                                        <span wire:click="edit_product('{{ $order['identifier'] }}')"
+                                            class="p-0 btn text-primary">Edit</span>
                                         <span wire:click="remove_product('{{ $order['identifier'] }}')"
                                             class="p-0 btn text-danger">Hapus</span>
                                     </div>
@@ -38,7 +38,6 @@
                             </li>
                         @endforeach
                     </ol>
-
                 </div>
             </div>
             <div class="card mb-3">
@@ -78,7 +77,7 @@
                 $('#modal').hide()
                 $('.modal').removeClass('show')
             })
-            
+
             $wire.on('update-product-state', () => {
                 $('#modal').hide()
                 $('.modal').removeClass('show')

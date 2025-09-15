@@ -32,10 +32,6 @@
                     </div>
                 @endforeach
             </div>
-            <div class="col-4">
-                <h4>Status Order</h4>
-                <span>{{ $order->status_order }}</span>
-            </div>
         </div>
     </div>
 </div>

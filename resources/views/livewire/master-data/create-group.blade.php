@@ -18,7 +18,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <button type="button" wire:click="add_item" class="btn btn-info">Tambah Item</button>
-                <button type="button" wire:click="delete_item" class="btn btn-danger">Hapus Item</button>
+                <button type="button" wire:click="delete_item" class="btn btn-danger" x-bind:disabled="$wire.form.items.length == 1 ? true : false">Hapus Item</button>
                 <div class="mb-3">
                     @for ($i = 0; $i < sizeof($form->items); $i++)
                         <div key="{{ uniqid('item_input_') }}" class="row">

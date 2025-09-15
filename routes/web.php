@@ -62,6 +62,7 @@ use App\Livewire\Pages\CreateOrder;
 use App\Livewire\Pages\CreatePurchaseReport;
 use App\Livewire\Pages\EditOperationCost;
 use App\Livewire\Pages\EditPurchaseReport;
+use App\Livewire\Pages\OpenBill;
 use App\Livewire\Pages\OperationCost;
 use App\Livewire\Pages\Order;
 use App\Livewire\Pages\PurchaseReport;
@@ -156,6 +157,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders', Order::class)->name('order');
     Route::get('order/create', CreateOrder::class)->name('order.create');
     Route::get('order/view/{order}', ViewOrder::class)->name('order.view');
+    // Open Bill
+     Route::get('open-bills', OpenBill::class)->name('open-bill');
     // Purchase
     Route::get('purchases', PurchaseReport::class)->name('purchase');
     Route::get('purchases/create', CreatePurchaseReport::class)->name('purchase.create');

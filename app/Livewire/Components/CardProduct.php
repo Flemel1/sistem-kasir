@@ -26,7 +26,6 @@ class CardProduct extends Component
     {
         $additional_products = $product::where('id', $product->id)
             ->withWhereHas('additional_products')
-            ->get()
             ->first()->additional_products ?? collect([]);
         $data = [
             'product_id' => $product->id,
