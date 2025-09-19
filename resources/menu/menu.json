@@ -43,6 +43,11 @@
           "url": "/master-data/grup-produk",
           "name": "Grup Produk",
           "slug": "master-data.group-product"
+        },
+        {
+          "url": "/master-data/shift",
+          "name": "Shift",
+          "slug": "master-data.shift"
         }
       ]
     },
