@@ -51,10 +51,13 @@ use App\Livewire\MasterData\Category;
 use App\Livewire\MasterData\CreateCategory;
 use App\Livewire\MasterData\CreateGroup;
 use App\Livewire\MasterData\CreateMenu;
+use App\Livewire\MasterData\CreateShift;
 use App\Livewire\MasterData\EditCategory;
 use App\Livewire\MasterData\EditMenu;
+use App\Livewire\MasterData\EditShift;
 use App\Livewire\MasterData\Group;
 use App\Livewire\MasterData\Menu;
+use App\Livewire\MasterData\Shift;
 use App\Livewire\MasterData\ViewCategory;
 use App\Livewire\MasterData\ViewMenu;
 use App\Livewire\Pages\CreateOperationCost;
@@ -172,6 +175,10 @@ Route::middleware(['auth'])->group(function () {
     // Grup Produk
     Route::get('master-data/grup-produk', Group::class)->name('master-data.group-product');
     Route::get('master-data/grup-produk/create', CreateGroup::class)->name('master-data.group-product.create');
+    // Shift
+    Route::get('master-data/shift', Shift::class)->name('master-data.shift');
+    Route::get('master-data/shift/create', CreateShift::class)->name('master-data.shift.create');
+    Route::get('master-data/shift/edit/{shift}', EditShift::class)->name('master-data.shift.edit');
 });
 
 // Route::view('/reports/invoice', 'reports.invoice');
