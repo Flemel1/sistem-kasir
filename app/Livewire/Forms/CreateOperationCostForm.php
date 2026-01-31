@@ -8,12 +8,32 @@ use Livewire\Form;
 
 class CreateOperationCostForm extends Form
 {
-    #[Validate(rule: 'required|string|max:150')]
     public ?string $cost_name;
-    #[Validate(rule: 'required|string')]
+
     public ?string $cost_description;
-    #[Validate(rule: 'required|numeric')]
+
     public ?string $cost_nominal;
+
+    public function rules(): array
+    {
+        return [
+            'cost_name' => 'required|string|max:150',
+            'cost_description' => 'required|string',
+            'cost_nominal' => 'required|numeric',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'cost_name.required' => 'Nama wajib diisi',
+            'cost_name.max' => 'Nama maksimal 150 karakter',
+            'cost_description.required' => 'Deskripsi wajib diisi',
+            'cost_nominal.required' => 'Nominal wajib diisi',
+            'cost_nominal.numeric' => 'Nominal harus berupa angka',
+        ];
+    }
+
 
     public function setOperationCost(OperationCost $cost)
     {

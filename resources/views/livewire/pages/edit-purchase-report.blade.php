@@ -41,7 +41,7 @@
 
     @script
         <script>
-            $wire.on('edit-purchase', (detail) => {
+            $wire.on('update-purchase', (detail) => {
 
                 const {
                     type,

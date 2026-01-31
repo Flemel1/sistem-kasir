@@ -1,15 +1,15 @@
 <div>
-    @section('title', 'Daftar Grup Produk')
+    @section('title', 'Daftar Produk Tambahan')
     <div class="card">
-        <h5 class="card-header">Daftar Grup Produk</h5>
+        <h5 class="card-header">Daftar Produk Tambahan</h5>
         <a class="ms-auto me-3" href="{{ route('master-data.group-product.create') }}" wire:navigate>
-            <button type="button" class="btn btn-primary">Tambah Grup Produk</button>
+            <button type="button" class="btn btn-primary">Tambah</button>
         </a>
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Nama Grup Produk</th>
+                        <th>Nama</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -22,9 +22,9 @@
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                         data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                                     <div class="dropdown-menu">
-                                        <a href="#"
+                                        <a href="{{ route('master-data.group-product.view', ['group' => $group])}}"
                                             class="dropdown-item" wire:navigate><i class="bx bx-pencil me-1"></i>
-                                            Edit</a>
+                                            Detail</a>
                                     </div>
                                 </div>
                             </td>

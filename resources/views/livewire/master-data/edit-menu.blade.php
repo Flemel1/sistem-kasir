@@ -3,8 +3,9 @@
 <div>
     <div class="card">
         <h5 class="card-header">Edit Menu</h5>
-        <div class="card-body">
-            <form wire:submit="update">
+        <form wire:submit="update">
+            <div class="card-body">
+
                 <div class="mb-3">
                     <label for="product_name" class="form-label">Nama Produk</label>
                     <input wire:model="form.product_name" type="text" id="product_name" class="form-control"
@@ -54,46 +55,47 @@
                         <span class="text-danger">{{ $message }} </span>
                     @enderror
                 </div>
-            </form>
 
-            <div>
-                <div class="table-responsive text-nowrap">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nama Grup Produk</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                            @foreach ($groups as $group)
+
+                <div>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $group->group_name }}</td>
-                                    <td>
-                                        @if (!$product->additional_product_ids->contains('additional_product_id', $group->id))
-                                            <button wire:click="add_additional_product({{ $group->id }})"
-                                                type="button" class="btn btn-success">Tambah</button>
-                                        @else
-                                            <button wire:click="delete_additional_product({{ $group->id }})"
-                                                type="button" class="btn btn-danger">Hapus</button>
-                                        @endif
-                                    </td>
+                                    <th>Produk Tambahan</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+                                @foreach ($groups as $group)
+                                    <tr>
+                                        <td>{{ $group->group_name }}</td>
+                                        <td>
+                                            @if (!$product->additional_product_ids->contains('additional_product_id', $group->id))
+                                                <button wire:click="add_additional_product({{ $group->id }})"
+                                                    type="button" class="btn btn-success">Tambah</button>
+                                            @else
+                                                <button wire:click="delete_additional_product({{ $group->id }})"
+                                                    type="button" class="btn btn-danger">Hapus</button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
 
 
-                        </tbody>
-                    </table>
-                </div>
+                            </tbody>
+                        </table>
+                    </div>
 
-                <div class="p-2">
-                    {{ $groups->links() }}
+                    <div class="p-2">
+                        {{ $groups->links() }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
     </div>
 
     @livewire('components.notification-toast')

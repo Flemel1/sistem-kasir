@@ -8,10 +8,28 @@ use Livewire\Form;
 
 class LoginForm extends Form
 {
-    #[Validate(rule: 'required|string|min:3|max:100')]
     public string $username;
-    #[Validate(rule: 'required|string')]
+
     public string $password;
+
+    public function rules(): array
+    {
+        return [
+            'username' => 'required|string|min:3|max:100',
+            'password' => 'required|string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'username.required' => 'Username wajib diisi',
+            'username.min' => 'Username minimal 3 karakter',
+            'username.max' => 'Username maksimal 100 karakter',
+            'password.required' => 'Password wajib diisi',
+        ];
+    }
+
 
     public function login(): bool
     {

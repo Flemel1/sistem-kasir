@@ -20,6 +20,17 @@ class CreateShiftForm extends Form
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'employee_name.required' => 'Nama pegawai wajib diisi',
+            'employee_name.min' => 'Nama pegawai minimal 1 karakter',
+            'employee_name.max' => 'Nama pegawai maksimal 150 karakter',
+            'shifts.required' => 'Jadwal wajib diisi',
+            'shifts.*.string' => 'Jadwal harus berupa string',
+        ];
+    }
+
     public function setShift(Shift $shift): void
     {
         $this->employee_name = $shift->employee_name;

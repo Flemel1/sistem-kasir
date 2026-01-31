@@ -5663,7 +5663,7 @@ slash@^3.0.0:
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
 "sneat-bootstrap-html-laravel-admin-template-free@file:":
-  version "1.1.1"
+  version "0.0.1"
   resolved "file:"
   dependencies:
     "@popperjs/core" "^2.11.8"

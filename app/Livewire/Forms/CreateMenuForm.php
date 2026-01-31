@@ -10,20 +10,47 @@ use Livewire\Form;
 class CreateMenuForm extends Form
 {
     
-    #[Validate(rule: 'required|string|min:3|max:150')]
     public string $product_name;
 
-    #[Validate(rule: 'required|string|min:3|max:150')]
     public string $product_description;
 
-    #[Validate(rule: 'required|string|min:3|max:11|regex:/^\d+$/')]
     public string $product_price;
 
-    #[Validate(rule: 'required|string|min:3|max:11|regex:/^\d+$/')]
     public string $product_takeaway_price;
 
-    #[Validate(rule: 'required|string')]
     public string $category_id;
+
+    public function rules(): array
+    {
+        return [
+            'product_name' => 'required|string|min:3|max:150',
+            'product_description' => 'required|string|min:1|max:150',
+            'product_price' => 'required|string|min:3|max:11|regex:/^\d+$/',
+            'product_takeaway_price' => 'required|string|min:3|max:11|regex:/^\d+$/',
+            'category_id' => 'required|string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'product_name.required' => 'Nama produk wajib diisi',
+            'product_name.min' => 'Nama produk minimal 3 karakter',
+            'product_name.max' => 'Nama produk maksimal 150 karakter',
+            'product_description.min' => 'Deskripsi produk minimal 1 karakter',
+            'product_description.max' => 'Deskripsi produk maksimal 150 karakter',
+            'product_description.required' => 'Deskripsi produk wajib diisi',
+            'product_price.required' => 'Harga produk wajib diisi',
+            'product_price.min' => 'Harga produk minimal 3 karakter',
+            'product_price.max' => 'Harga produk maksimal 11 karakter',
+            'product_price.regex' => 'Harga produk harus berupa angka',
+            'product_takeaway_price.required' => 'Harga produk takeaway wajib diisi',
+            'product_takeaway_price.min' => 'Harga produk takeaway minimal 3 karakter',
+            'product_takeaway_price.max' => 'Harga produk takeaway maksimal 11 karakter',
+            'product_takeaway_price.regex' => 'Harga produk takeaway harus berupa angka',
+            'category_id.required' => 'Kategori produk wajib diisi',
+        ];
+    }
 
     public function setProduct(Product $product): void
     {

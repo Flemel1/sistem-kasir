@@ -31,7 +31,7 @@ class EditOperationCost extends Component
         } catch (ValidationException $ex) {
             $this->dispatch('edit-operation-cost', [
                 'type' => 'error',
-                'message' => 'Maaf terjadi kesalahan pada input data'
+                'message' => $ex->getMessage()
             ]);
         } catch (Exception $ex) {
             $this->dispatch('edit-operation-cost', [

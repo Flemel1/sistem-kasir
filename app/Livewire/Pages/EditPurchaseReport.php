@@ -32,7 +32,7 @@ class EditPurchaseReport extends Component
         } catch (ValidationException $ex) {
             $this->dispatch('update-purchase', [
                 'type' => 'error',
-                'message' => 'Maaf terjadi kesalahan pada input data'
+                'message' => $ex->getMessage()
             ]);
         } catch (Exception $ex) {
             $this->dispatch('update-purchase', [

@@ -9,14 +9,40 @@ use Livewire\Form;
 
 class RegisterForm extends Form
 {
-    #[Validate(rule: 'required|string|min:3|max:150')]
     public string $name;
-    #[Validate(rule: 'required|string|min:3|max:100|unique:users,username')]
+
     public string $username;
-    #[Validate(rule: 'required|email|unique:users,email')]
+
     public string $email;
-    #[Validate(rule: 'required|string')]
+
     public string $password;
+
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|min:3|max:150',
+            'username' => 'required|string|min:3|max:100|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama wajib diisi',
+            'name.min' => 'Nama minimal 3 karakter',
+            'name.max' => 'Nama maksimal 100 karakter',
+            'username.required' => 'Username wajib diisi',
+            'username.min' => 'Username minimal 3 karakter',
+            'username.max' => 'Username maksimal 100 karakter',
+            'username.unique' => 'Username sudah ada',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Input harus berupa email',
+            'email.unique' => 'Email sudah ada',
+            'password.required' => 'Password wajib diisi',
+        ];
+    }
 
     public function register(): bool
     {

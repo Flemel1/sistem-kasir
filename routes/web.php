@@ -53,12 +53,14 @@ use App\Livewire\MasterData\CreateGroup;
 use App\Livewire\MasterData\CreateMenu;
 use App\Livewire\MasterData\CreateShift;
 use App\Livewire\MasterData\EditCategory;
+use App\Livewire\MasterData\EditGroup;
 use App\Livewire\MasterData\EditMenu;
 use App\Livewire\MasterData\EditShift;
 use App\Livewire\MasterData\Group;
 use App\Livewire\MasterData\Menu;
 use App\Livewire\MasterData\Shift;
 use App\Livewire\MasterData\ViewCategory;
+use App\Livewire\MasterData\ViewGroup;
 use App\Livewire\MasterData\ViewMenu;
 use App\Livewire\Pages\CreateOperationCost;
 use App\Livewire\Pages\CreateOrder;
@@ -72,6 +74,7 @@ use App\Livewire\Pages\PurchaseReport;
 use App\Livewire\Pages\ViewOperationCost;
 use App\Livewire\Pages\ViewOrder;
 use App\Livewire\Pages\ViewPurchaseReport;
+use App\Livewire\Setting;
 
 // Main Page Route
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
@@ -146,6 +149,8 @@ Route::prefix('auth')->group(function () {
 // main routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
+    Route::get('/setting', Setting::class)->name('setting');
+
     // Menu
     Route::get('master-data/menu', Menu::class)->name('master-data.menu');
     Route::get('master-data/menu/create', CreateMenu::class)->name('master-data.menu.create');
@@ -161,7 +166,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('order/create', CreateOrder::class)->name('order.create');
     Route::get('order/view/{order}', ViewOrder::class)->name('order.view');
     // Open Bill
-     Route::get('open-bills', OpenBill::class)->name('open-bill');
+    Route::get('open-bills', OpenBill::class)->name('open-bill');
     // Purchase
     Route::get('purchases', PurchaseReport::class)->name('purchase');
     Route::get('purchases/create', CreatePurchaseReport::class)->name('purchase.create');
@@ -175,6 +180,8 @@ Route::middleware(['auth'])->group(function () {
     // Grup Produk
     Route::get('master-data/grup-produk', Group::class)->name('master-data.group-product');
     Route::get('master-data/grup-produk/create', CreateGroup::class)->name('master-data.group-product.create');
+    Route::get('master-data/grup-produk/view/{group}', ViewGroup::class)->name('master-data.group-product.view');
+    Route::get('master-data/grup-produk/edit/{group}', EditGroup::class)->name('master-data.group-product.edit');
     // Shift
     Route::get('master-data/shift', Shift::class)->name('master-data.shift');
     Route::get('master-data/shift/create', CreateShift::class)->name('master-data.shift.create');

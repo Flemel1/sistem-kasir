@@ -24,11 +24,9 @@ class Register extends Component
         $isSuccess = $this->form->register();
 
         if ($isSuccess) {
-            $this->form->reset();
             $this->redirectRoute('auth.login');
         }
 
-        $this->form->reset();
     }
 
     public function render()

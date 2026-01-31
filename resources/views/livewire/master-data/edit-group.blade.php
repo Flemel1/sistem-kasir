@@ -1,9 +1,9 @@
-@section('title', 'Tambah Produk Tambahan')
+@section('title', 'Edit Produk Tambahan')
 
 <div>
-    <form wire:submit="store">
+    <form wire:submit="update">
         <div class="card">
-            <h5 class="card-header">Tambah</h5>
+            <h5 class="card-header">Edit</h5>
 
             <div class="card-body">
                 <div class="mb-3">
@@ -19,10 +19,10 @@
                 @enderror
                 <button type="button" wire:click="add_item" class="btn btn-info">Tambah Item</button>
                 <button type="button" wire:click="delete_item" class="btn btn-danger"
-                    x-bind:disabled="$wire.form.items.length == 1 ? true : false">Hapus Item</button>
+                    x-bind:disabled="$wire.form.items.length == 1">Hapus Item</button>
                 <div class="mb-3">
-                    @for ($i = 0; $i < sizeof($form->items); $i++)
-                        <div key="{{ uniqid('item_input_') }}" class="row">
+                    @for ($i = 0; $i < count($form->items); $i++)
+                        <div wire:key="item-{{ $i }}" class="row">
                             <div class="col-6">
                                 <label for="form.items.{{ $i }}.item_name" class="form-label">Nama
                                     Item</label>
@@ -36,7 +36,7 @@
                             <div class="col-6">
                                 <label for="form.items.{{ $i }}.item_price" class="form-label">Harga
                                     Item</label>
-                                <input wire:model="form.items.{{ $i }}.item_price" type="numeric"
+                                <input wire:model="form.items.{{ $i }}.item_price" type="number"
                                     id="form.items.{{ $i }}.item_price" class="form-control"
                                     placeholder="Masukan harga per item" required>
                                 @error('form.items.{{ $i }}.item_price')
@@ -77,7 +77,7 @@
 
     @script
         <script>
-            $wire.on('create-group-product', (detail) => {
+            $wire.on('update-group-product', (detail) => {
                 const {
                     type,
                     message

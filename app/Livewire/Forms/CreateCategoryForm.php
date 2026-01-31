@@ -9,8 +9,25 @@ use Livewire\Form;
 
 class CreateCategoryForm extends Form
 {
-    #[Validate('required|string|min:3|max:100|unique:product_categories,category_name')]
     public string $category_name;
+
+    public function rules(): array
+    {
+        return [
+            'category_name' => 'required|string|min:3|max:100|unique:product_categories,category_name',
+        ];
+    }
+
+    public function message(): array
+    {
+        return [
+            'category_name.required' => 'Nama kategori wajib diisi',
+            'category_name.min' => 'Nama kategori minimal 3 karakter',
+            'category_name.max' => 'Nama kategori maksimal 100 karakter',
+            'category_name.unique' => 'Nama kategori sudah ada',
+        ];
+    }
+
 
     public function setCategory(ProductCategory $category): void
     {

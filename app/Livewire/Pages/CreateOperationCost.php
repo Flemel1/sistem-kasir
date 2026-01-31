@@ -23,7 +23,7 @@ class CreateOperationCost extends Component
         } catch (ValidationException $ex) {
             $this->dispatch('create-operation-cost', [
                 'type' => 'error',
-                'message' => 'Maaf terjadi kesalahan pada input data'
+                'message' => $ex->getMessage()
             ]);
         } catch (Exception $ex) {
             $this->dispatch('create-operation-cost', [

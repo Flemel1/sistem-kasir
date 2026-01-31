@@ -1,11 +1,11 @@
 <?php
   // Variables
   return [
-    "creatorName" => "ThemeSelection",
-    "creatorUrl" => "https://themeselection.com",
-    "name" => "Sneat",
-    "suffix" => "Bootstrap 5 HTML Laravel Free Admin Template",
-    "version" => "1.1.0",
+    "creatorName" => "Web Builder Indo",
+    "creatorUrl" => "https://webbuilderindo.com",
+    "name" => "Cashier App",
+    "suffix" => "Cashier App",
+    "version" => "0.0.1",
     "free" => true,
     "description" => "Sistem Kasir",
     "keyword" => "kasir, cashier",

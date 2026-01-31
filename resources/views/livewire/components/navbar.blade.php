@@ -73,21 +73,15 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="javascript:void(0);">
-                            <i class="bx bx-user me-2"></i>
-                            <span class="align-middle">My Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);">
+                        <a class="dropdown-item" href="{{ route('setting') }}" wire:navigate>
                             <i class='bx bx-cog me-2'></i>
-                            <span class="align-middle">Settings</span>
+                            <span class="align-middle">Ganti Password</span>
                         </a>
                     </li>
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>
-                    <li wire:click="logout" class="cursor">
+                    <li wire:click="logout" style="cursor: pointer;">
                         <a class="dropdown-item">
                             <i class='bx bx-power-off me-2'></i>
                             <span class="align-middle">Log Out</span>

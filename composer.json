@@ -1,10 +1,11 @@
 {
-  "name": "laravel/laravel",
+  "name": "cashier app",
   "type": "project",
-  "description": "The skeleton application for the Laravel framework.",
+  "description": "The cashier app",
   "keywords": [
     "laravel",
-    "framework"
+    "framework",
+    "cashier"
   ],
   "license": "MIT",
   "require": {
