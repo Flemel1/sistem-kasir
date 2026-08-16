@@ -37,10 +37,7 @@ class CreateGroup extends Component
                 ]);
             }
         } catch (ValidationException $ex) {
-            $this->dispatch('create-group-product', [
-                'type' => 'error',
-                'message' => $ex->getMessage()
-            ]);
+            throw $ex;
         } catch (Exception $ex) {
             $this->dispatch('create-group-product', [
                 'type' => 'error',

@@ -21,10 +21,7 @@ class CreatePurchaseReport extends Component
             ]);
             $this->redirectRoute('purchase');
         } catch (ValidationException $ex) {
-            $this->dispatch('create-purchase', [
-                'type' => 'error',
-                'message' => 'Maaf terjadi kesalahan pada input data'
-            ]);
+            throw $ex;
         } catch (Exception $ex) {
             $this->dispatch('create-purchase', [
                 'type' => 'error',

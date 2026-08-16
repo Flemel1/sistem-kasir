@@ -69,7 +69,9 @@ class ModalOrder extends Component
 
     public function decrease_amount(): void
     {
-        $this->form->amount = $this->form->amount - 1;
+        if ($this->form->amount > 1) {
+            $this->form->amount = $this->form->amount - 1;
+        }
     }
 
     public function close(): void

@@ -15,7 +15,7 @@ class EditShift extends Component
 
     public function mount(Shift $shift)
     {
-        $this->shift = $this->shift;
+        $this->shift = $shift;
         $this->form->setShift($shift);
     }
 

@@ -16,4 +16,9 @@ class OpenOrder extends Model
         'grand_total',
         'doned_at',
     ];
+
+    protected $casts = [
+        'ordered_items' => 'array',
+        'doned_at' => 'datetime',
+    ];
 }

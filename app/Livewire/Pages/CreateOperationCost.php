@@ -21,10 +21,7 @@ class CreateOperationCost extends Component
             ]);
             $this->redirectRoute('operation-cost');
         } catch (ValidationException $ex) {
-            $this->dispatch('create-operation-cost', [
-                'type' => 'error',
-                'message' => $ex->getMessage()
-            ]);
+            throw $ex;
         } catch (Exception $ex) {
             $this->dispatch('create-operation-cost', [
                 'type' => 'error',

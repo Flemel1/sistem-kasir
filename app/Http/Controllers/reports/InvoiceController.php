@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\reports;
 
 use App\Http\Controllers\Controller;
+use App\Services\PrinterService;
 use Illuminate\Http\Request;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
@@ -12,7 +13,7 @@ class InvoiceController extends Controller
     public function print_invoice()
     {
         $currentDate = now()->format('d/m/Y h:m:s');
-        $printerId = 'POS-58';
+        $printerId = PrinterService::getActivePrinterName();
         $connector = new WindowsPrintConnector($printerId);
         $printer = new Printer($connector);
         $printer->setJustification(Printer::JUSTIFY_CENTER);

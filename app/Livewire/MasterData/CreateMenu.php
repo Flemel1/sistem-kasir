@@ -6,6 +6,7 @@ use App\Livewire\Forms\CreateMenuForm;
 use App\Models\ProductCategory;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class CreateMenu extends Component
@@ -34,6 +35,8 @@ class CreateMenu extends Component
                     'message' => 'Produk gagal dibuat'
                 ]);
             }
+        } catch (ValidationException $ex) {
+            throw $ex;
         } catch (Exception $ex) {
             $this->dispatch('create-product', [
                 'type' => 'error',

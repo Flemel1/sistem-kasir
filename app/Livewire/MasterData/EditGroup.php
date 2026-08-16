@@ -44,11 +44,6 @@ class EditGroup extends Component
                     'message' => 'Produk tambahan gagal diubah'
                 ]);
             }
-        } catch (ValidationException $ex) {
-            $this->dispatch('update-group-product', [
-                'type' => 'error',
-                'message' => $ex->getMessage()
-            ]);
         } catch (Exception $ex) {
             $this->dispatch('update-group-product', [
                 'type' => 'error',

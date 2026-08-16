@@ -8,6 +8,7 @@ use App\Models\OpenOrder;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Services\PrinterService;
 use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,13 +29,33 @@ class CreateOrder extends Component
 
     public ?OpenOrder $openBill = null;
 
-    public function mount(Request $request): void
+    public function mount(Request $request, $open_bill_id = null): void
     {
-        $openBillID = $request->query('open_bill_id');
+        $openBillID = $open_bill_id ?? $request->query('open_bill_id');
         if ($openBillID) {
             try {
                 $openBill = OpenOrder::whereNull('doned_at')->findOrFail($openBillID);
-                $this->currentOrders = collect(json_decode($openBill->ordered_items, true));
+                $this->currentOrders = collect($openBill->ordered_items)->map(function ($item) {
+                    if (!isset($item['identifier'])) {
+                        $item['identifier'] = base64_encode(($item['product_name'] ?? '') . '_' . ($item['product_id'] ?? ''));
+                    }
+                    if (!isset($item['additional_products'])) {
+                        $item['additional_products'] = [];
+                    }
+                    if (!isset($item['additional_product_prices'])) {
+                        $item['additional_product_prices'] = 0;
+                    }
+                    if (!isset($item['price_choose'])) {
+                        $item['price_choose'] = PriceChoose::NORMAL->value;
+                    }
+                    if (!isset($item['takeaway_price'])) {
+                        $item['takeaway_price'] = 0;
+                    }
+                    if (!isset($item['product_id'])) {
+                        $item['product_id'] = 0;
+                    }
+                    return $item;
+                });
                 $this->total = $openBill->grand_total;
 
                 $this->openBill = $openBill;
@@ -272,7 +293,14 @@ class CreateOrder extends Component
                                 'type' => 'success',
                                 'message' => 'Pesanan Berhasil Dibuat'
                             ]);
-                            // $this->print_invoice($customer_name, $cash_money);
+                            try {
+                                $this->print_invoice($customer_name, $cash_money);
+                            } catch (\Exception $e) {
+                                $this->dispatch('create-order-status', [
+                                    'type' => 'warning',
+                                    'message' => 'Printer tidak terhubung. Silakan colok printer terlebih dahulu.'
+                                ]);
+                            }
                             $this->redirectRoute('order');
                         } else {
                             DB::rollBack();
@@ -302,7 +330,7 @@ class CreateOrder extends Component
     {
         $change_money =  $cash_money - $this->total;
         $currentDate = now()->format('d/m/Y H:m:s');
-        $printerId = 'POS-58';
+        $printerId = PrinterService::getActivePrinterName();
         $connector = new WindowsPrintConnector($printerId);
         $printer = new Printer($connector);
         $printer->setJustification(Printer::JUSTIFY_CENTER);
